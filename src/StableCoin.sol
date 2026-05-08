@@ -5,7 +5,7 @@ import {ERC20} from "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import {ERC20Burnable} from "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
-contract StableCoin is ERC20Burnable, Ownable {
+contract StableCoin is ERC20Burnable, Ownable(msg.sender) {
     error StableCoin__AmountMustBeMoreThanZero();
     error StableCoin__NotEnoghBalance();
     error StableCoin__ZeroAddress();
