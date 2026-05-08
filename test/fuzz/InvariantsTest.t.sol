@@ -11,7 +11,7 @@ import {StableCoin} from "../../src/StableCoin.sol";
 import {Handler} from "./Handler.t.sol";
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-contract InvariantTest is StdInvariant, Test{
+contract InvariantTest is StdInvariant, Test {
     DSCEngine dscEngine;
     StableCoin stableCoin;
     DeployDSC deployer;
@@ -29,10 +29,9 @@ contract InvariantTest is StdInvariant, Test{
         (stableCoin, dscEngine, config) = deployer.run();
         handler = new Handler(dscEngine, stableCoin);
         targetContract(address(handler));
-        
 
-        (wethUSDPriceFeed, wbtcUSDPriceFeed, weth, wbtc, ) = config.activeNetworkConfig();
-        
+        (wethUSDPriceFeed, wbtcUSDPriceFeed, weth, wbtc,) = config.activeNetworkConfig();
+
         uint256 amountToMint = 10e18;
 
         vm.prank(USER);
@@ -53,6 +52,4 @@ contract InvariantTest is StdInvariant, Test{
         //Total Collateral Value must be more than total supply
         assert(totalCollateral >= totalSupply);
     }
-
-
 }

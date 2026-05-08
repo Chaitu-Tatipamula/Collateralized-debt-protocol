@@ -7,19 +7,13 @@ import {StableCoin} from "../src/StableCoin.sol";
 import {HelperConfig} from "./HelperConfig.s.sol";
 
 contract DeployDSC is Script {
-
     address[] public tokens;
     address[] public priceFeeds;
 
     function run() external returns (StableCoin, DSCEngine, HelperConfig) {
-
         HelperConfig config = new HelperConfig();
-        (address wethUSDPriceFeed, 
-            address wbtcUSDPriceFeed,
-            address weth,
-            address wbtc,
-            uint256 deployerKey
-        ) = config.activeNetworkConfig();
+        (address wethUSDPriceFeed, address wbtcUSDPriceFeed, address weth, address wbtc, uint256 deployerKey) =
+            config.activeNetworkConfig();
         tokens = [weth, wbtc];
         priceFeeds = [wethUSDPriceFeed, wbtcUSDPriceFeed];
 

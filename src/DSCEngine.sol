@@ -31,7 +31,9 @@ contract DSCEngine is ReentrancyGuard {
 
     event CollateralDeposited(address indexed user, address indexed token, uint256 indexed amount);
     event DSCMinted(address indexed user, uint256 indexed amount);
-    event CollateralRedeemed(address indexed redeemFrom, address indexed redeemTo, address tokenCollateral, uint256 amount);
+    event CollateralRedeemed(
+        address indexed redeemFrom, address indexed redeemTo, address tokenCollateral, uint256 amount
+    );
 
     modifier mustBeMoreThanZero(uint256 _amount) {
         if (_amount <= 0) {
@@ -113,9 +115,13 @@ contract DSCEngine is ReentrancyGuard {
         emit DSCMinted(msg.sender, _amount);
     }
 
-    function liquidate(address collateral, address user, uint256 debtToCover) external mustBeMoreThanZero(debtToCover) nonReentrant {
+    function liquidate(address collateral, address user, uint256 debtToCover)
+        external
+        mustBeMoreThanZero(debtToCover)
+        nonReentrant
+    {
         uint256 startingHealthFactor = _healthFactor(user);
-        if(startingHealthFactor > MIN_HEALTH_FACTOR){
+        if (startingHealthFactor > MIN_HEALTH_FACTOR) {
             revert DSCEngine__HealthFactorOK();
         }
         uint256 tokenAmountFromDebtCovered = getTokenAmountFromUSD(collateral, debtToCover);
@@ -129,7 +135,7 @@ contract DSCEngine is ReentrancyGuard {
         _burnDSC(debtToCover, user, msg.sender);
 
         uint256 endingUserHeathFactor = _healthFactor(user);
-        if(endingUserHeathFactor <= startingHealthFactor){
+        if (endingUserHeathFactor <= startingHealthFactor) {
             revert DSCEngine__HealthFactorNotImproved();
         }
 
@@ -203,7 +209,11 @@ contract DSCEngine is ReentrancyGuard {
         return ((usdAmountinWei * PRECISION) / (uint256(price) * ADDITIONAL_FEED_PRECISION));
     }
 
-    function getAccountInformation(address user) public view returns (uint256 totalDscMinted, uint256 collateralValueUSD){
+    function getAccountInformation(address user)
+        public
+        view
+        returns (uint256 totalDscMinted, uint256 collateralValueUSD)
+    {
         return _getAccountInfo(user);
     }
 
